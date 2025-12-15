@@ -199,7 +199,7 @@ void loadConfig() {
 
     Serial.println("Load config.");
 
-    StaticJsonDocument<1024> doc;
+    JsonDocument doc;
     deserializeJson(doc, file);
 
     Serial.println(doc.as<String>());
@@ -266,7 +266,7 @@ void saveConfig() {
 
   Serial.println("Save config.");
 
-  StaticJsonDocument<1024> doc;
+  JsonDocument doc;
 
 #ifdef FEATURE_BG
   doc["color_bg_r"] 				= CONFIG.color_bg.r;
@@ -370,7 +370,7 @@ bool jetztDunkelschaltung(int hour, int minute) {
 //
 // Zeitfunktionen
 //
-bool getLocalTime(struct tm *info, uint32_t ms) {
+bool WCgetLocalTime(struct tm *info, uint32_t ms) {
     uint32_t count = ms / 10;
     time_t now;
 
@@ -395,7 +395,7 @@ bool getLocalTime(struct tm *info, uint32_t ms) {
 void GetTimeAndDate(int *stunden, int *minuten, int *tag, int *monat, int *jahr) {
 	struct tm tmstruct;
 
-	getLocalTime(&tmstruct, 5000);
+	WCgetLocalTime(&tmstruct, 5000);
 
 	*stunden	= tmstruct.tm_hour;
 	*minuten	= tmstruct.tm_min;
@@ -409,7 +409,7 @@ String GetDatumZeitString() {
     char buffer[80];
 
 
-    getLocalTime(&tmstruct, 5000);
+    WCgetLocalTime(&tmstruct, 5000);
 
     strftime(buffer, 80, "%d.%m.%Y %H:%M", &tmstruct);
 
